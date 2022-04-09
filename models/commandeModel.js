@@ -7,8 +7,7 @@ const commande = mongoose.model(
             required: true
         },
         idlivreur: {
-            type: String,
-            required: true
+            type: String
         },
         address: {
             type: String,
@@ -22,6 +21,26 @@ const commande = mongoose.model(
             type: Date,
             required: true,
             default: Date.now()
+        },
+        detail: [{
+            idplatrestaurant: {
+                type: String,
+                required: true
+            },
+            nb: {
+                type: Number,
+                required: true
+            }
+        }],
+        islivre: {
+            type: Number,
+            required: true,
+            default: 0
+        },
+        islivrable: {
+            type: Number,
+            required: true,
+            default: 0
         },
         etat: {
             type: Number,

@@ -11,13 +11,22 @@ const platrestaurant = mongoose.model(
             type: String,
             required: true
         },
-        prixderevient: {
+        prixrestaurant: {
             type: Number,
             required: true
         },
         prix: {
             type: Number,
             required: true
+        },
+        cout: {
+            type: Number,
+            required: true
+        },
+        isvisible: {
+            type: Number,
+            required: true,
+            default:1
         },
         insertdate: {
             type: Date,

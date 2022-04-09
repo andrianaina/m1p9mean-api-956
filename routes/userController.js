@@ -10,10 +10,10 @@ const ObjectID = require('mongoose').Types.ObjectId;
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-routeur.get('/', (req, res) => {
-    userModel.find((err, docs) => {
-        if (!err) res.send(docs);
-        else console.log('error to get data:' + err);
+routeur.get('/role/:role', (req, res) => {
+    userModel.find({ role: req.params.role }, (err, results) => {
+        console.log(results);
+        res.status(200).send(results);
     });
 });
 routeur.get('/profil', (req, res) => {
@@ -39,20 +39,25 @@ routeur.get('/profil', (req, res) => {
         }
         );
 });
+routeur.get('/restaurant', function (req, res) {
+    userModel.find({ role: 'restaurant' }, (err, results) => {
+        res.status(200).send(results);
+    });
+});
 routeur.post('/login', (req, res) => {
+
     var username = req.body.username;
     var mdp = req.body.mdp;
-
-    if (email == null || mdp == null) {
-        return res.status.status(400).send('parameters is missing');
+    if (username == null || mdp == null) {
+        return res.status(400).send('parameters is missing');
     }
-
     userModel.findOne({ username: username }).then(function (userFound) {
         if (userFound)
             bcrypt.compare(mdp, userFound.mdp, function (errbcrypt, resCompare) {
                 if (resCompare) {
                     return res.status(200).send({
                         'idUser': userFound.id,
+                        'role': userFound.role,
                         'token': jwtUtils.generateTokenForUser(userFound)
                     });
                 }
@@ -68,14 +73,14 @@ routeur.delete('/disconnect', (req, res) => {
 })
 
 routeur.post('/register', (req, res) => {
-    if (req.body.role == null || req.body.username == null || req.body.email == null || req.body.mdp == null) {
-        return res.status.status(400).send('parameters is missing');
+    if (req.body.role == null || req.body.role == "" || req.body.username == null || req.body.email == null || req.body.mdp == null) {
+        return res.status(400).send('parameters is missing');
     }
     if (req.body.username.length < 4) {
-        return res.status.status(400).send('wrong username (>=4 characters) ');
+        return res.status(400).send('wrong username (>=4 characters) ');
     }
     if (!EMAIL_REGEX.test(req.body.email)) {
-        return res.status.status(400).send('email format invalid');
+        return res.status(400).send('email format invalid');
     }
     userModel.findOne({ username: req.body.username }).then(function (userFound) {
         if (!userFound) {

@@ -13,6 +13,11 @@ const commandedetail = mongoose.model(
         nb: {
             type: Number,
             required: true
+        },
+        islivrable: {
+            type: Number,
+            required: true,
+            default: 0
         }
     }
 );

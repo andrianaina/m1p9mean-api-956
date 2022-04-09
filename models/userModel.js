@@ -4,6 +4,7 @@ const userModel = mongoose.model(
     {
         username: {
             type: String,
+            unique: true,
             required: true
         },
         tel: {
