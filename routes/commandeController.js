@@ -12,7 +12,7 @@ routeur.post('/add', (req, res) => {
         return res.status(400).send('parameters is missing');
     }
 
-    livreur = -1;
+    livreur = '6250037acb5569c74e0fdfl';
 
     const newcommandeRecord = new commandeModel({
         idclient: req.body.idclient,
@@ -72,17 +72,18 @@ routeur.put('/Plat/islivrable/:id', (req, res) => {
         console.log(err)
     });
 })
-routeur.put('commande/livreur/:id', (req, res) => {
-    commandeDetailModel.findByIdAndUpdate(
-        { _id: req.params.id },
-        { livreur: req.body.livreur },
-        function (err, result) {
+routeur.put('/updatelivreur', (req, res) => {
+    console.log(req.body.id);
+    commandeModel.findByIdAndUpdate(
+        req.body.id,
+        { idlivreur: req.body.idlivreur },
+        (err, result) => {
         }
     );
 })
-routeur.put('commande/livre/:id', (req, res) => {
-    commandeDetailModel.findByIdAndUpdate(
-        { _id: req.params.id },
+routeur.put('/livre/:id', (req, res) => {
+    commandeModel.findByIdAndUpdate(
+        req.params.id,
         { islivre: 1 },
         function (err, result) {
         }
@@ -91,24 +92,25 @@ routeur.put('commande/livre/:id', (req, res) => {
 routeur.get('/livreur/:id', (req, res) => {
     // if (!ObjectID.isValid(req.params.id))
     //     return res.status(400).send("ID unknow:" + req.params.id)
-    commandeModel.find({ idlivreur: req.params.id, islivrable: 1, islivre: 0 }, (result) => {
-        res.status(200).send(result);
+    commandeModel.find({ islivrable: 1, islivre: 0 }).populate('idlivreur').exec((err, result) => {
+        rep = [];
+        result.forEach(element => {
+            if (element.idlivreur._id.equals(req.params.id)) rep.push(element);
+        });
+        res.status(200).send(rep);
     });
 });
 routeur.get('/restaurant/:id', (req, res) => {
     // if (!ObjectID.isValid(req.params.id))
     //     return res.status(400).send("ID unknow:" + req.params.id)
-    // commandeDetailModel.find({ idrestaurant: req.params.id, islivrable: 0 }, (err, result) => {
-    commandeDetailModel.find({ idrestaurant: req.params.id }, (err, result) => {
-        // for (const key in result) {
-        //     result[key].name = 'none';
-        //     platrestaurantModel.findOne({ _id: result[key].idrestaurant }).then((found) => {
-        //         console.log("haha");
-        //         result[key].name = found.name;
-        //     })
-        // }
-
-        res.status(200).send(result);
+    commandeDetailModel.find({ islivrable: 0 }).populate('idcommande').populate('idplatrestaurant').exec((error, result) => {
+        rep = [];
+        if (result) {
+            result.forEach(element => {
+                if (element.idplatrestaurant.idrestaurant.equals(req.params.id)) rep.push(element);
+            });
+            res.status(200).send(rep);
+        }
     });
 });
 // routeur.get('/restaurant/now/:id', (req, res) => {
@@ -135,7 +137,7 @@ routeur.get('/admin/now/', (req, res) => {
     // if (!ObjectID.isValid(req.params.id))
     //     return res.status(400).send("ID unknow:" + req.params.id)
 
-    commandeModel.find({ islivre: 0 }, (err, result) => {
+    commandeModel.find({ islivre: 0 }).populate('idclient').populate('idlivreur').exec((err, result) => {
         res.status(200).send(result);
     });
 });

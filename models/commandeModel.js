@@ -2,13 +2,8 @@ const mongoose = require("mongoose");
 const commande = mongoose.model(
     "commande",
     {
-        idclient: {
-            type: String,
-            required: true
-        },
-        idlivreur: {
-            type: String
-        },
+        idclient: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
+        idlivreur: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
         address: {
             type: String,
             required: true
@@ -22,16 +17,16 @@ const commande = mongoose.model(
             required: true,
             default: Date.now()
         },
-        detail: [{
-            idplatrestaurant: {
-                type: String,
-                required: true
-            },
-            nb: {
-                type: Number,
-                required: true
-            }
-        }],
+        // detail: [{
+        //     idplatrestaurant: {
+        //         type: String,
+        //         required: true
+        //     },
+        //     nb: {
+        //         type: Number,
+        //         required: true
+        //     }
+        // }],
         islivre: {
             type: Number,
             required: true,

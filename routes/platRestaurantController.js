@@ -36,8 +36,14 @@ routeur.get('/', (req, res) => {
 });
 
 routeur.get('/platrestaurant/:id', (req, res) => {
-    platrestaurantModel.find({ idrestaurant: req.params.id }, (err, result) => {
-        res.status(200).send(result);
+    platrestaurantModel.find({}).populate('idrestaurant').exec((err, result) => {
+        rep = [];
+        result.forEach(element => {
+            if (element.idrestaurant.equals(req.params.id)) {
+                rep.push(element);
+            }
+        })
+        res.status(200).send(rep);
     });
 });
 routeur.put('/visibility', (req, res) => {

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const platrestaurant = mongoose.model(
     "platrestaurant",
     {
@@ -7,10 +6,12 @@ const platrestaurant = mongoose.model(
             type: String,
             required: true
         },
-        idrestaurant: {
-            type: String,
-            required: true
-        },
+
+        // idrestaurant: {
+        //     type: String,
+        //     required: true
+        // },
+        idrestaurant: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
         prixrestaurant: {
             type: Number,
             required: true
@@ -26,7 +27,7 @@ const platrestaurant = mongoose.model(
         isvisible: {
             type: Number,
             required: true,
-            default:1
+            default: 1
         },
         insertdate: {
             type: Date,

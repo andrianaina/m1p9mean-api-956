@@ -2,14 +2,8 @@ const mongoose = require("mongoose");
 const commandedetail = mongoose.model(
     "commandedetail",
     {
-        idcommande: {
-            type: String,
-            required: true
-        },
-        idplatrestaurant: {
-            type: String,
-            required: true
-        },
+        idcommande: { type: mongoose.Schema.Types.ObjectId, ref: "commande" },
+        idplatrestaurant: { type: mongoose.Schema.Types.ObjectId, ref: "platrestaurant" },
         nb: {
             type: Number,
             required: true

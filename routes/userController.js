@@ -12,7 +12,6 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 routeur.get('/role/:role', (req, res) => {
     userModel.find({ role: req.params.role }, (err, results) => {
-        console.log(results);
         res.status(200).send(results);
     });
 });
