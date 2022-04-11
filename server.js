@@ -15,6 +15,5 @@ app.use(bodyParser.json());
 app.use('/user', userRoutes);
 app.use('/plat', platRestaurantroutes);
 app.use('/commande', commandeRoutes);
-app.use('/',()=>{return ['Welcome to Ekaly Api']});
 
 app.listen(process.env.PORT || 5000,() => console.log('server started:'));
