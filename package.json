@@ -4,7 +4,7 @@
   "description": "Serveur http pour api REST",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "keywords": [
     "server",
