@@ -16,4 +16,4 @@ app.use('/user', userRoutes);
 app.use('/plat', platRestaurantroutes);
 app.use('/commande', commandeRoutes);
 
-app.listen(5000, () => console.log('server started:5500'));
+app.listen(process.env.PORT || 5000,() => console.log('server started:'));
